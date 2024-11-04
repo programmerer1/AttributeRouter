@@ -1,14 +1,13 @@
 {
-    "name": "root/router.loc",
+    "name": "AttributeRouter/Router",
     "authors": [
         {
-            "name": "Router"
+            "name": "Programmer"
         }
     ],
     "autoload": {
         "psr-4": {
-            "AttributeRouter\\": "src/",
-            "Controller\\": "app/Controller/"
+            "AttributeRouter\\": "src/"
         }
     },
     "require": {
