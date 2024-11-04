@@ -1,0 +1,17 @@
+{
+    "name": "root/router.loc",
+    "authors": [
+        {
+            "name": "Router"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "AttributeRouter\\": "src/",
+            "Controller\\": "app/Controller/"
+        }
+    },
+    "require": {
+        "php-di/php-di": "^7.0"
+    }
+}
