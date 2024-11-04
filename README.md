@@ -2,6 +2,25 @@
 ```bash
 composer require attribute-router/router
 ```
+# Controller
+```php
+declare(strict_types=1);
+
+namespace Controller;
+
+use AttributeRouter\Route;
+use AttributeRouter\RouteGroup;
+
+#[RouteGroup(path: '/admin')]
+class HomeController
+{
+    #[Route(path: '/edit/{id}/{uuid?}', methods: ['GET', 'POST'], name: 'edit', patterns: ['id' => '[0-9]+'])]
+    public function edit($id)
+    {
+        //
+    }
+}
+```
 ```php
 require '../vendor/autoload.php';
 
