@@ -15,7 +15,7 @@ use AttributeRouter\RouteGroup;
 class HomeController
 {
     #[Route(path: '/edit/{id}/{uuid?}', methods: ['GET', 'POST'], name: 'edit', patterns: ['id' => '[0-9]+'])]
-    public function edit($id)
+    public function edit(int $id, ?string $uuid = null)
     {
         //
     }
