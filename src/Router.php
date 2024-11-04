@@ -35,6 +35,7 @@ class Router
         foreach ($controllers as $controller) {
             $reflection = new ReflectionClass($controller);
             $prefix = '';
+
             /** @var RouteGroup $prefix_route */
             if (!empty($prefix_route = $reflection->getAttributes(RouteGroup::class))) {
                 $prefix_route = $prefix_route[0]->newInstance();
@@ -47,6 +48,7 @@ class Router
                 foreach ($attributes as $attribute) {
                     /** @var Route $route */
                     $route = $attribute->newInstance();
+
                     $this->routes[] = [
                         'pattern' => $this->patternGenerator->generate($route, $prefix),
                         'path' => $route->path,
@@ -75,6 +77,7 @@ class Router
                 $controller = $this->container->get($route['controller']);
                 $route['route'] = $matches[0];
                 $route['params'] = array_filter($matches, fn($key) => !is_int($key), ARRAY_FILTER_USE_KEY);
+
                 $methodReflection = $this->parameterResolver
                     ->setController($controller)
                     ->setMethodName($route['action'])
