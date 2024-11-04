@@ -10,8 +10,8 @@ use Controller\TestController;
 $container = new Container;
 $router = $container->get(Router::class);
 $router->registerRoutes([
-HomeController::class,
-TestController::class,
+    HomeController::class,
+    TestController::class,
 ]);
 
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
