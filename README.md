@@ -1,4 +1,7 @@
 # Example
+```bash
+composer require attribute-router/router
+```
 ```php
 require '../vendor/autoload.php';
 
