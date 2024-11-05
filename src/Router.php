@@ -92,7 +92,8 @@ class Router
         foreach ($this->routes as $route) {
             if (($matches = $this->matchRoute($route, $requestUri, $requestMethod)) !== null) {
                 $route['route'] = $matches[0];
-                $this->invokeController($route, $matches);
+                $route['params'] = $this->resolveRouteParams($matches);
+                $this->invokeController($route);
                 return;
             }
         }
@@ -114,10 +115,9 @@ class Router
      * @throws ContainerExceptionInterface
      * @throws ReflectionException
      */
-    private function invokeController(array $route, array $matches): void
+    private function invokeController(array $route): void
     {
         $controller = $this->container->get($route['controller']);
-        $route['params'] = $this->resolveRouteParams($matches);
         $methodReflection = $this->parameterResolver
             ->setController($controller)
             ->setMethodName($route['action'])
