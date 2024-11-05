@@ -59,13 +59,12 @@ Cached routes can be forwarded. This method is shown for familiarization. You ca
 ```php
 $container = new Container;
 $router = $container->get(Router::class);
-
-$data = $router->registerRoutes([
+$router->registerRoutes([
     HomeController::class,
     TestController::class,
 ]);
 
-file_put_contents('cache.txt', serialize($data));
+file_put_contents('cache.txt', serialize($router->getRoutes()));
 ```
 If routes are cached, you can do without registering controllers
 ```php
