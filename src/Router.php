@@ -19,8 +19,8 @@ class Router
     public function __construct(
         private readonly ContainerInterface     $container,
         private readonly RouteParameterResolver $parameterResolver,
-        public LocaleService                    $localeService,
-        public RoutePatternGenerator            $patternGenerator,
+        private readonly LocaleService          $localeService,
+        private readonly RoutePatternGenerator  $patternGenerator,
     )
     {
     }
@@ -154,5 +154,17 @@ class Router
     public function getCurrent(): array
     {
         return $this->current;
+    }
+
+    public function setDefaultLocale(string $locale): static
+    {
+        $this->localeService->setDefaultLocale($locale);
+        return $this;
+    }
+
+    public function setLocales(array $locales): static
+    {
+        $this->localeService->setLocales($locales);
+        return $this;
     }
 }
