@@ -45,7 +45,7 @@ It is also possible to specify languages. But it should be specified before regi
 ```php
 $container = new Container;
 $router = $container->get(Router::class);
-$router->localeService->setDefaultLocale('en')->setLocales(['en', 'ru', 'fr']);
+$router->setDefaultLocale('en')->setLocales(['en', 'ru', 'fr']);
 $router->registerRoutes([
     HomeController::class,
     TestController::class,
