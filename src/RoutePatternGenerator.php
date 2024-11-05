@@ -12,15 +12,26 @@ class RoutePatternGenerator
         'slug' => '[a-z0-9-]+',
     ];
 
-    public function generate(Route $route, string $prefix = ''): string
+    public function generate(Route $route): string
     {
         $path = preg_replace_callback('/\/{(\w+)\??}/', function ($matches) use ($route) {
             $paramName = $matches[1];
             $isOptional = str_contains($matches[0], '?');
             $pattern = $route->patterns[$paramName] ?? $this->aliases[$paramName] ?? $this->aliases['default'];
             return $isOptional ? "(?:/(?P<$paramName>$pattern))?" : "/(?P<$paramName>$pattern)";
-        }, $prefix . $route->path);
+        }, $route->groupPath . $route->path);
 
         return '#^' . $path . '$#';
+    }
+
+    public function addAlias(string $alias, string $pattern): static
+    {
+        $this->aliases[$alias] = $pattern;
+        return $this;
+    }
+
+    public function getAliases(): array
+    {
+        return $this->aliases;
     }
 }

@@ -24,6 +24,7 @@ class RouteParameterResolver
     /**
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      * @throws ReflectionException
      */
     public function resolve(): ReflectionMethod

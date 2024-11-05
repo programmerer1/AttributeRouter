@@ -13,6 +13,8 @@ class Route
         public array  $methods = ['GET'],
         public string $name = '',
         public array  $patterns = [],
+        public array  $locales = [],
+        public string $groupPath = '',
     )
     {
     }
