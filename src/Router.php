@@ -110,6 +110,13 @@ class Router
         return null;
     }
 
+    private function resolveRouteParams(array $matches): array
+    {
+        $params = array_filter($matches, fn($key) => !is_int($key), ARRAY_FILTER_USE_KEY);
+        $params['locale'] ??= $this->localeService->getDefaultLocale();
+        return $params;
+    }
+
     /**
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
@@ -126,13 +133,6 @@ class Router
 
         $this->current = $route;
         $methodReflection->invokeArgs($controller, $this->parameterResolver->getOrderedParams());
-    }
-
-    private function resolveRouteParams(array $matches): array
-    {
-        $params = array_filter($matches, fn($key) => !is_int($key), ARRAY_FILTER_USE_KEY);
-        $params['locale'] ??= $this->localeService->getDefaultLocale();
-        return $params;
     }
 
     public function setRoutes(array $routes): static
