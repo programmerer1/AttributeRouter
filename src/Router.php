@@ -97,6 +97,7 @@ class Router
                 return;
             }
         }
+
         throw new NotFoundHttpException('Page not found');
     }
 
@@ -113,7 +114,11 @@ class Router
     private function resolveRouteParams(array $matches): array
     {
         $params = array_filter($matches, fn($key) => !is_int($key), ARRAY_FILTER_USE_KEY);
-        $params['locale'] = $params['locale'] ?: $this->localeService->getDefaultLocale();
+
+        if (empty($params['locale']) && !empty($this->localeService->getDefaultLocale())) {
+            $params['locale'] = $this->localeService->getDefaultLocale();
+        }
+
         return $params;
     }
 

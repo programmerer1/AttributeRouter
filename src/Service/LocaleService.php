@@ -5,8 +5,8 @@ namespace AttributeRouter\Service;
 
 class LocaleService
 {
-    private string $defaultLocale;
-    private array $locales;
+    private string $defaultLocale = '';
+    private array $locales = [];
 
     public function setDefaultLocale(string $defaultLocale): static
     {
