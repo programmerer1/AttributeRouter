@@ -64,7 +64,7 @@ class Router
         if (!empty($route->locales)) {
             $this->patternGenerator->addAlias('locale', implode('|', $route->locales));
 
-            if (preg_match('/{locale(\?)?}/', $route->path) === false) {
+            if (!preg_match('/{locale(\?)?}/', $route->path)) {
                 $route->path = '/{locale?}' . $route->path;
             }
         }
