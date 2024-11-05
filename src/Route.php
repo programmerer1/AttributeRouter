@@ -10,9 +10,9 @@ class Route
 {
     public function __construct(
         public string $path,
-        public array $methods = ['GET'],
+        public array  $methods = ['GET'],
         public string $name = '',
-        public array $patterns = [],
+        public array  $patterns = [],
     )
     {
     }

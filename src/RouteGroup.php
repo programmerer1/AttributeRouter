@@ -5,7 +5,7 @@ namespace AttributeRouter;
 
 use Attribute;
 
-#[Attribute]
+#[Attribute(Attribute::TARGET_CLASS)]
 class RouteGroup
 {
     public function __construct(public string $path = '')
