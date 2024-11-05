@@ -34,12 +34,12 @@ class Router
     {
         foreach ($controllers as $controller) {
             $reflection = new ReflectionClass($controller);
-            $prefix = '';
+            $group_path = '';
 
-            /** @var RouteGroup $prefix_route */
-            if (!empty($prefix_route = $reflection->getAttributes(RouteGroup::class))) {
-                $prefix_route = $prefix_route[0]->newInstance();
-                $prefix = rtrim($prefix_route->path, '/');
+            if (!empty($routeGroupReflection = $reflection->getAttributes(RouteGroup::class))) {
+                /** @var RouteGroup $routeGroup */
+                $routeGroup = $routeGroupReflection[0]->newInstance();
+                $group_path = rtrim($routeGroup->path, '/');
             }
 
             foreach ($reflection->getMethods() as $method) {
@@ -50,9 +50,9 @@ class Router
                     $route = $attribute->newInstance();
 
                     $this->routes[] = [
-                        'pattern' => $this->patternGenerator->generate($route, $prefix),
+                        'pattern' => $this->patternGenerator->generate($route, $group_path),
                         'path' => $route->path,
-                        'prefix' => $prefix,
+                        'group' => $group_path,
                         'methods' => array_map('strtoupper', $route->methods),
                         'controller' => $controller,
                         'action' => $method->getName(),
