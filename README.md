@@ -74,7 +74,5 @@ $router = $container->get(Router::class);
 $data = unserialize(file_get_contents('cache.txt'));
 
 $router->setRoutes($data);
-$requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$requestMethod = $_SERVER['REQUEST_METHOD'];
 $router->dispatch($requestUri, $requestMethod);
 ```
