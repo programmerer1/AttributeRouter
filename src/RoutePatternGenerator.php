@@ -21,7 +21,7 @@ class RoutePatternGenerator
             return $isOptional ? "(?:/(?P<$paramName>$pattern))?" : "/(?P<$paramName>$pattern)";
         }, $route->groupPath . $route->path);
 
-        return '#^' . $path . '$#';
+        return '#^' . $path . '/?$#';
     }
 
     public function addAlias(string $alias, string $pattern): static
