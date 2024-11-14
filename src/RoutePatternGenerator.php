@@ -24,7 +24,7 @@ class RoutePatternGenerator
         return '#^' . $path . '/?$#';
     }
 
-    public function addAlias(string $alias, string $pattern): static
+    public function setAlias(string $alias, string $pattern): static
     {
         $this->aliases[$alias] = $pattern;
         return $this;

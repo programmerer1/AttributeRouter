@@ -62,7 +62,7 @@ class Router
     private function normalizeRouteLocale(Route $route): void
     {
         if (!empty($route->locales)) {
-            $this->patternGenerator->addAlias('locale', implode('|', $route->locales));
+            $this->patternGenerator->setAlias('locale', implode('|', $route->locales));
 
             if (!preg_match('/{locale(\?)?}/', $route->path)) {
                 $route->path = '/{locale?}' . $route->path;
@@ -166,5 +166,16 @@ class Router
     {
         $this->localeService->setLocales($locales);
         return $this;
+    }
+
+    public function setAlias(string $alias, string $pattern): static
+    {
+        $this->patternGenerator->setAlias($alias, $pattern);
+        return $this;
+    }
+
+    public function getAliases(): array
+    {
+        return $this->patternGenerator->getAliases();
     }
 }
