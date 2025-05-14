@@ -19,7 +19,8 @@ class HomeController
         methods: ['GET'], 
         name: 'edit', 
         patterns: ['id' => '[0-9]+'], 
-        priority: 10)]
+        priority: 10
+    )]
     public function edit(int $id, ?string $uuid = null)
     {
         //
