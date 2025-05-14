@@ -60,7 +60,6 @@ class Router
     private function getGroupAttributes(ReflectionClass $reflection): array
     {
         return $reflection->getAttributes(RouteGroup::class);
-        //return $groupAttributes ? rtrim($groupAttributes[0]->newInstance()->path, '/') : '';
     }
 
     private function normalizeRouteLocale(Route $route): void
