@@ -48,7 +48,6 @@ class Router
                     $route->priority = $groupPriority + $route->priority;
                     $route->locales = $route->locales ?: $this->localeService->getLocales();
                     $this->normalizeRouteLocale($route);
-
                     $this->routes[] = $this->buildRoute($route, $controller, $method->getName());
                 }
             }
