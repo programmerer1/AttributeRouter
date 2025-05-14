@@ -1,5 +1,6 @@
 {
     "name": "attribute-router/router",
+    "description": "AttributeRouter is a lightweight and intuitive routing solution for PHP applications",
     "authors": [
         {
             "name": "Programmer"

@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AttributeRouter;
 
+use AttributeRouter\Exception\MethodNotAllowedException;
 use AttributeRouter\Service\LocaleService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -21,9 +23,7 @@ class Router
         private readonly RouteParameterResolver $parameterResolver,
         private readonly LocaleService          $localeService,
         private readonly RoutePatternGenerator  $patternGenerator,
-    )
-    {
-    }
+    ) {}
 
     /**
      * Registers routes by scanning controllers and their methods for route attributes.
@@ -98,13 +98,19 @@ class Router
             }
         }
 
-        throw new NotFoundHttpException('Page not found');
+        throw new NotFoundHttpException();
     }
 
+    /**
+     * @throws MethodNotAllowedException
+     */
     private function matchRoute(array $route, string $requestUri, string $requestMethod): ?array
     {
-        if (in_array(strtoupper($requestMethod), $route['methods'], true) &&
-            preg_match($route['pattern'], $requestUri, $matches)) {
+        if (in_array(strtoupper($requestMethod), $route['methods'], true) === false) {
+            throw new MethodNotAllowedException();
+        }
+
+        if (preg_match($route['pattern'], $requestUri, $matches) === true) {
             return $matches;
         }
 
