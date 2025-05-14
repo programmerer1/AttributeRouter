@@ -93,7 +93,7 @@ class Router
             if (($matches = $this->matchRoute($route, $requestUri, $requestMethod)) !== null) {
                 $route['route'] = $matches[0];
                 $route['params'] = $this->resolveRouteParams($matches);
-                $this->invokeController($route);
+                $this->current = $route;
                 return;
             }
         }
@@ -110,7 +110,7 @@ class Router
             throw new MethodNotAllowedException();
         }
 
-        if (preg_match($route['pattern'], $requestUri, $matches) === true) {
+        if (preg_match($route['pattern'], $requestUri, $matches)) {
             return $matches;
         }
 
@@ -133,16 +133,14 @@ class Router
      * @throws ContainerExceptionInterface
      * @throws ReflectionException
      */
-    private function invokeController(array $route): void
+    public function invokeController(): void
     {
-        $controller = $this->container->get($route['controller']);
+        $controller = $this->container->get($this->current['controller']);
         $methodReflection = $this->parameterResolver
             ->setController($controller)
-            ->setMethodName($route['action'])
-            ->setParams($route['params'])
+            ->setMethodName($this->current['action'])
+            ->setParams($this->current['params'])
             ->resolve();
-
-        $this->current = $route;
         $methodReflection->invokeArgs($controller, $this->parameterResolver->getOrderedParams());
     }
 
