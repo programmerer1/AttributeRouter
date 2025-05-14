@@ -11,10 +11,10 @@ namespace Controller;
 use AttributeRouter\Route;
 use AttributeRouter\RouteGroup;
 
-#[RouteGroup(path: '/admin')]
+#[RouteGroup(path: '/admin', priority: 5)]
 class HomeController
 {
-    #[Route(path: '/edit/{id}/{uuid?}', methods: ['GET'], name: 'edit', patterns: ['id' => '[0-9]+'])]
+    #[Route(path: '/edit/{id}/{uuid?}', methods: ['GET'], name: 'edit', patterns: ['id' => '[0-9]+'], priority: 10)]
     public function edit(int $id, ?string $uuid = null)
     {
         //

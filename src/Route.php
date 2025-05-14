@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AttributeRouter;
@@ -15,7 +16,6 @@ class Route
         public array  $patterns = [],
         public array  $locales = [],
         public string $groupPath = '',
-    )
-    {
-    }
+        public int $priority = 0
+    ) {}
 }

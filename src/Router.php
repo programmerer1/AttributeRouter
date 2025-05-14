@@ -35,7 +35,9 @@ class Router
     {
         foreach ($controllers as $controller) {
             $reflection = new ReflectionClass($controller);
-            $groupPath = $this->getGroupPath($reflection);
+            $groupAttributes = $this->getGroupAttributes($reflection);
+            $groupPath = $groupAttributes ? rtrim($groupAttributes[0]->newInstance()->path, '/') : '';
+            $groupPriority = $groupAttributes ? $groupAttributes[0]->newInstance()->priority : 0;
 
             foreach ($reflection->getMethods() as $method) {
                 $attributes = $method->getAttributes(Route::class);
@@ -43,7 +45,7 @@ class Router
                 foreach ($attributes as $attribute) {
                     $route = $attribute->newInstance();
                     $route->groupPath = $groupPath;
-
+                    $route->priority = $groupPriority + $route->priority;
                     $route->locales = $route->locales ?: $this->localeService->getLocales();
                     $this->normalizeRouteLocale($route);
 
@@ -51,12 +53,14 @@ class Router
                 }
             }
         }
+
+        usort($this->routes, fn($a, $b) => $b['priority'] <=> $a['priority']);
     }
 
-    private function getGroupPath(ReflectionClass $reflection): string
+    private function getGroupAttributes(ReflectionClass $reflection): array
     {
-        $groupAttributes = $reflection->getAttributes(RouteGroup::class);
-        return $groupAttributes ? rtrim($groupAttributes[0]->newInstance()->path, '/') : '';
+        return $reflection->getAttributes(RouteGroup::class);
+        //return $groupAttributes ? rtrim($groupAttributes[0]->newInstance()->path, '/') : '';
     }
 
     private function normalizeRouteLocale(Route $route): void
@@ -80,7 +84,8 @@ class Router
             'methods' => array_map('strtoupper', $route->methods),
             'controller' => $controller,
             'action' => $action,
-            'name' => $route->name
+            'name' => $route->name,
+            'priority' => $route->priority,
         ];
     }
 
