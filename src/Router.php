@@ -65,6 +65,7 @@ class Router
     private function normalizeRouteLocale(Route $route): void
     {
         if (!empty($route->locales)) {
+            $route->path = ($route->path === '/') ? trim($route->path, '/') : $route->path;
             $this->patternGenerator->setAlias('locale', implode('|', $route->locales));
 
             if (!preg_match('/{locale(\?)?}/', $route->path)) {
@@ -77,8 +78,8 @@ class Router
     {
         return [
             'pattern' => $this->patternGenerator->generate($route),
-            'path' => ($route->path === '/') ? trim($route->path) : $route->path,
-            'group_path' => ($route->groupPath === '/') ? trim($route->groupPath) : $route->groupPath,
+            'path' => $route->path,
+            'group_path' => ($route->groupPath === '/') ? trim($route->groupPath, '/') : $route->groupPath,
             'locales' => $route->locales,
             'methods' => array_map('strtoupper', $route->methods),
             'controller' => $controller,
