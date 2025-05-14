@@ -78,7 +78,7 @@ class Router
         return [
             'pattern' => $this->patternGenerator->generate($route),
             'path' => $route->path,
-            'group_path' => ($route->groupPath === '/') ? trim($route->groupPath, '/') : $route->groupPath,
+            'group_path' => $route->groupPath,
             'locales' => $route->locales,
             'methods' => array_map('strtoupper', $route->methods),
             'controller' => $controller,
