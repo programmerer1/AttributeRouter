@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace AttributeRouter;
 
+use AttributeRouter\Exception\MethodNotAllowedException;
 use AttributeRouter\Service\LocaleService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -21,9 +23,7 @@ class Router
         private readonly RouteParameterResolver $parameterResolver,
         private readonly LocaleService          $localeService,
         private readonly RoutePatternGenerator  $patternGenerator,
-    )
-    {
-    }
+    ) {}
 
     /**
      * Registers routes by scanning controllers and their methods for route attributes.
@@ -93,18 +93,24 @@ class Router
             if (($matches = $this->matchRoute($route, $requestUri, $requestMethod)) !== null) {
                 $route['route'] = $matches[0];
                 $route['params'] = $this->resolveRouteParams($matches);
-                $this->invokeController($route);
+                $this->current = $route;
                 return;
             }
         }
 
-        throw new NotFoundHttpException('Page not found');
+        throw new NotFoundHttpException();
     }
 
+    /**
+     * @throws MethodNotAllowedException
+     */
     private function matchRoute(array $route, string $requestUri, string $requestMethod): ?array
     {
-        if (in_array(strtoupper($requestMethod), $route['methods'], true) &&
-            preg_match($route['pattern'], $requestUri, $matches)) {
+        if (in_array(strtoupper($requestMethod), $route['methods'], true) === false) {
+            throw new MethodNotAllowedException();
+        }
+
+        if (preg_match($route['pattern'], $requestUri, $matches)) {
             return $matches;
         }
 
@@ -127,16 +133,14 @@ class Router
      * @throws ContainerExceptionInterface
      * @throws ReflectionException
      */
-    private function invokeController(array $route): void
+    public function invokeController(): void
     {
-        $controller = $this->container->get($route['controller']);
+        $controller = $this->container->get($this->current['controller']);
         $methodReflection = $this->parameterResolver
             ->setController($controller)
-            ->setMethodName($route['action'])
-            ->setParams($route['params'])
+            ->setMethodName($this->current['action'])
+            ->setParams($this->current['params'])
             ->resolve();
-
-        $this->current = $route;
         $methodReflection->invokeArgs($controller, $this->parameterResolver->getOrderedParams());
     }
 
