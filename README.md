@@ -40,6 +40,7 @@ $router->registerRoutes([
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $router->dispatch($requestUri, $requestMethod);
+$router->invokeController();
 ```
 It is also possible to specify languages. But it should be specified before registering the controllers.
 ```php
@@ -54,6 +55,7 @@ $router->registerRoutes([
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 $router->dispatch($requestUri, $requestMethod);
+$router->invokeController();
 ```
 Cached routes can be forwarded. This method is shown for familiarization. You can use special classes for this.
 ```php
@@ -75,4 +77,12 @@ $data = unserialize(file_get_contents('cache.txt'));
 
 $router->setRoutes($data);
 $router->dispatch($requestUri, $requestMethod);
+$router->invokeController();
+```
+
+
+```php
+# Current route 
+
+var_dump($router->getCurrent());
 ```
