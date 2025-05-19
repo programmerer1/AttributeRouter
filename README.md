@@ -1,4 +1,3 @@
-# Example
 ```bash
 composer require attribute-router/router
 ```
@@ -48,7 +47,7 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 $router->dispatch($requestUri, $requestMethod);
 $router->invokeController();
 ```
-It is also possible to specify languages. But it should be specified before registering the controllers.
+It is also possible to specify languages. But it should be specified before registering the controllers. In this case, the parameter /{locale?}/ will be automatically added to the beginning of all routes. A question mark means that this is an optional parameter. For example in the route /blog/123, would mean the default language, route /fr/blog/123, the French version.
 ```php
 $container = new Container;
 $router = $container->get(Router::class);
@@ -86,9 +85,23 @@ $router->dispatch($requestUri, $requestMethod);
 $router->invokeController();
 ```
 
-
-```php
 # Current route 
-
+```php
 var_dump($router->getCurrent());
+```
+# All routes 
+```php
+var_dump($router->getRoutes());
+```
+# Current route 
+```php
+var_dump($router->getCurrent());
+```
+# Register a new named parameter 
+```php
+$router->setAlias(alias: 'username', pattern: '[a-zA-Z0-9-_]+');
+```
+# Get all named parameter 
+```php
+$router->getAliases();
 ```
