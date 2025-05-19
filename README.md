@@ -93,10 +93,6 @@ All routes
 ```php
 var_dump($router->getRoutes());
 ```
-Current route 
-```php
-var_dump($router->getCurrent());
-```
 Register a new named parameter 
 ```php
 $router->setAlias(alias: 'username', pattern: '[a-zA-Z0-9-_]+');
