@@ -85,23 +85,23 @@ $router->dispatch($requestUri, $requestMethod);
 $router->invokeController();
 ```
 
-# Current route 
+Current route 
 ```php
 var_dump($router->getCurrent());
 ```
-# All routes 
+All routes 
 ```php
 var_dump($router->getRoutes());
 ```
-# Current route 
+Current route 
 ```php
 var_dump($router->getCurrent());
 ```
-# Register a new named parameter 
+Register a new named parameter 
 ```php
 $router->setAlias(alias: 'username', pattern: '[a-zA-Z0-9-_]+');
 ```
-# Get all named parameter 
+Get all named parameter 
 ```php
 $router->getAliases();
 ```
