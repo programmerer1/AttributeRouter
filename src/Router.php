@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace AttributeRouter;
 
-use AttributeRouter\Exception\MethodNotAllowedException;
 use AttributeRouter\Service\LocaleService;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -105,13 +104,10 @@ class Router
         throw new NotFoundHttpException();
     }
 
-    /**
-     * @throws MethodNotAllowedException
-     */
     private function matchRoute(array $route, string $requestUri, string $requestMethod): ?array
     {
         if (in_array(strtoupper($requestMethod), $route['methods'], true) === false) {
-            throw new MethodNotAllowedException();
+            return null;
         }
 
         if (preg_match($route['pattern'], $requestUri, $matches)) {
